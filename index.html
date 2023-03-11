@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tic Tac Toe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+<body>
+
+  <div class="scoreboard">
+    <div class="playerx-score">
+      <span class="player">Player X:</span>
+      <span class="score" id="x-score">0</span>
+    </div>
+    <div class="playero-score">
+      <span class="player">Player O:</span>
+      <span class="score" id="o-score">0</span>
+    </div>
+  </div>
+
+
+  <div class="game">
+    <div class="cell" id="cell_0"></div>
+    <div class="cell" id="cell_1"></div>
+    <div class="cell" id="cell_2"></div>
+    <div class="cell" id="cell_3"></div>
+    <div class="cell" id="cell_4"></div>
+    <div class="cell" id="cell_5"></div>
+    <div class="cell" id="cell_6"></div>
+    <div class="cell" id="cell_7"></div>
+    <div class="cell" id="cell_8"></div>
+  </div>
+
+
+
+  <div class="reset">
+    <button type="button" class="btn btn-warning"  onclick="restart()">Restart</button>
+  </div>
+
+
+
+  <script>
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let player = 'X';
+
+    let xscore = 0;
+    let oscore = 0;
+
+    function play(cell) {
+      if (board[cell.id.slice(5)] === '') {
+        cell.innerText = player;
+        board[cell.id.slice(5)] = player;
+        if (checkWin()) {
+          alert(player + ' wins!');
+          if (player === 'X') {
+              xscore++;
+              document.getElementById('x-score').innerText = xscore;
+            } else {
+              oscore++;
+              document.getElementById('o-score').innerText = oscore;
+            }
+        } else if (board.every((cell) => cell !== '')) {
+          alert("It's a tie!");
+          
+        } else {
+          player = player === 'X' ? 'O' : 'X';
+        }
+      }
+    }
+
+    function checkWin() {
+      let win_status = [    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6] // Diagonals
+      ];
+      for (let i = 0; i < win_status.length; i++) {
+        if (board[win_status[i][0]] !== '' && board[win_status[i][0]] === board[win_status[i][1]] && board[win_status[i][0]] === board[win_status[i][2]]) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function restart() {
+      board = ['', '', '', '', '', '', '', '', ''];
+      player = 'X';
+      let cells = document.getElementsByClassName('cell');
+      for (let i = 0; i < cells.length; i++) {
+        cells[i].innerText = '';
+      }
+    }
+
+    let cells = document.getElementsByClassName('cell');
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].onclick = function() {
+        play(cells[i]);
+      };
+    }
+
+  </script>
+</body>
+
+</html>
